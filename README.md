@@ -11,7 +11,7 @@
 - added port name
 - parameterize heap size in Dockerfile
 - fixed the liveness/readiness probe path to root / as /health doesn't exist
-- reduced readiness probe wait time
+- reduced readiness/liveness probe wait time
 - added configMap as volume mount
 - heap size and requests/limits tuning
 
