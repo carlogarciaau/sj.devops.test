@@ -5,6 +5,9 @@ metadata:
   namespace: default
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: devops-test
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -16,30 +19,35 @@ spec:
         app: devops-test
     spec:
       containers:
+      - name: devops-hello-world
         image: devops:test
         imagePullPolicy: Never
-        name: devops-hello-world
         ports:
-        - containerPort: 8080
+        - name: http
+          containerPort: 8080
           protocol: TCP
         resources:
           limits:
-            memory: 2Gi
+            memory: {{MEMORY}}
           requests:
-            memory: 2Gi
+            memory: {{MEMORY}}
         livenessProbe:
           httpGet:
-            path: /health
+            path: /
             port: http
           initialDelaySeconds: 60
           periodSeconds: 3600
         readinessProbe:
           httpGet:
-            path: /health
+            path: /
             port: http
           initialDelaySeconds: 60
-          periodSeconds: 3600
+          periodSeconds: 120
         volumeMounts:
           - name: config-volume
             mountPath: /opt/config/application.properties
             subPath: application.properties
+      volumes:
+        - name: config-volume
+          configMap:
+            name: hello-world-config
