@@ -12,3 +12,5 @@ kubectl create configmap hello-world-config --from-file application.properties
 # deployment
 kubectl apply -f hello-world-deploy.yaml
 
+# expose service
+kubectl expose deployment devops-test --type=LoadBalancer --port=8080
